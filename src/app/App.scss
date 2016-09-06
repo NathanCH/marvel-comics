@@ -3,6 +3,7 @@
 .App{
 	margin: 0 auto;
 	max-width: $break-lg;
+	animation: fadein 1s;
 
 	&__header{
 		padding: 10px;
@@ -12,4 +13,14 @@
 	&__title{
 		line-height: 48px;
 	}
+
+	&__attribution{
+		text-align: center;
+		padding: 50px 0;
+	}
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

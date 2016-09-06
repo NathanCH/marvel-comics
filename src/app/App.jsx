@@ -5,6 +5,7 @@ import './App.scss';
 
 import * as ComicActions from '../actions/ComicActions.jsx';
 import ComicStore from '../store/ComicStore.jsx';
+import Loader from '../component/Loader.jsx';
 import Grid from '../component/Grid.jsx';
 import Overlay from '../component/Overlay.jsx';
 
@@ -14,12 +15,14 @@ class App extends Component {
 		this.state = {
 			data: [],
 			active: {},
+			loading: true,
 			overlay: false
 		};
 		this.setData = this.setData.bind(this);
 		this.setActiveComic = this.setActiveComic.bind(this);
 		this.renderOverlay = this.renderOverlay.bind(this);
 		this.removeOverlay = this.removeOverlay.bind(this);
+		this.body = document.getElementsByTagName('body')[0];
 	}
 	componentWillMount() {
 		ComicActions.makeRequest();
@@ -28,11 +31,12 @@ class App extends Component {
 	}
 	componentWillUnmount() {
 	 	ComicStore.removeListener('change', this.setData);
-	 	ComicStore.on('setActive', this.setActiveComic);
+	 	ComicStore.removeListener('setActive', this.setActiveComic);
 	}
 	setData() {
 		this.setState({
-			data: ComicStore.get()
+			data: ComicStore.get(),
+			loading: false
 		});
 	}
 	setActiveComic() {
@@ -43,6 +47,7 @@ class App extends Component {
 	}
 	renderOverlay(){
 		if(this.state.overlay) {
+			this.body.style.overflow = 'hidden';
 			return (
 				<Overlay item={this.state.active} 
 						 show={this.state.overlay} 
@@ -51,12 +56,16 @@ class App extends Component {
 		}
 	}
 	removeOverlay() {
+		this.body.style.overflow = 'auto';
 		this.setState({
 			overlay: false,
 			active: {}
 		});
 	}
 	render() {
+		if(this.state.loading) {
+			return <Loader />;
+		}
 		return(
 			<div className="App">
 				<header className="App__header">
@@ -66,6 +75,9 @@ class App extends Component {
 				</header>
 				<div className="App__body">
 					<Grid items={this.state.data} />
+				</div>
+				<div className="App__attribution">
+					&copy; 2016 Marvel
 				</div>
 				{this.renderOverlay()}
 			</div>
