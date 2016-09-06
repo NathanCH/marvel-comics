@@ -1,0 +1,22 @@
+@import '../variables.scss';
+
+.Grid{
+
+	display: flex;
+	flex-flow: row wrap;
+
+	&__item{
+		width: calc(25% - 20px);
+		margin: 10px;
+
+		// 3 per row.
+		@media (max-width: $break-md) {
+			width: calc(33.333% - 20px);
+		}
+
+		// 2 per row.
+		@media (max-width: $break-sm) {
+			width: calc(50% - 20px);
+		}
+	}
+}

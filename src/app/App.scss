@@ -1,0 +1,15 @@
+@import '../variables.scss';
+
+.App{
+	margin: 0 auto;
+	max-width: $break-lg;
+
+	&__header{
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+
+	&__title{
+		line-height: 48px;
+	}
+}
